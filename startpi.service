@@ -1,0 +1,14 @@
+[Unit]
+Description=Raspberry Pi Display Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/startpi
+ExecReload=/usr/local/bin/startpi
+Type=Exec
+Restart=always
+
+
+[Install]
+WantedBy=default.target
+RequiredBy=network.target
