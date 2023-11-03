@@ -15,13 +15,13 @@
 #include <sstream>
 #include <fstream>
 
-#include "SSD1306_OLED.hpp"
+#include "myoled.hpp"
 
 #define myOLEDwidth  128
 #define myOLEDheight 64
 const uint16_t I2C_Speed = 626; //  bcm2835I2CClockDivider enum , see readme.
 const uint8_t I2C_Address = 0x3C;
-SSD1306 myOLED(myOLEDwidth ,myOLEDheight) ; // instantiate  an object 
+myOled myOLED(myOLEDwidth ,myOLEDheight) ; // instantiate  an object 
 
 // =============== Function prototype ================
 int TestLoop(void);
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 	trigger.close();
 
 	bcm2835_delay(500);
-	myOLED.OLEDbegin(I2C_Speed, I2C_Address);
+	myOLED.begin(I2C_Speed, I2C_Address);
 
 	return TestLoop();
 	
@@ -62,8 +62,7 @@ int TestLoop()
 		uint8_t  screenBuffer[myOLEDwidth * (myOLEDheight/8)+1]; 
 		myOLED.buffer = (uint8_t*) &screenBuffer;  // set that to library buffer pointer
 
-		myOLED.OLEDclearBuffer(); 
-		myOLED.setTextColor(WHITE);
+		myOLED.clearBuffer(); 
 		myOLED.setCursor(0, 0);
 
 		//get time
@@ -112,7 +111,7 @@ int TestLoop()
 		    myOLED.print(std::string("IP: ") + buf);
 		}
 
-		myOLED.OLEDupdate();  
+		myOLED.update();  
 
 		//change board leds
 		if (state) {

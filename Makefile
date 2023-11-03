@@ -18,11 +18,11 @@ SRC=src
 # ********************
 
 CC=g++
-LDFLAGS= -lbcm2835 -lrt -lSSD1306_OLED_RPI -lX11
+LDFLAGS= -lbcm2835 -lrt -lX11
 CFLAGS = -c -Wall 
 MD=mkdir
 OBJ=obj
-SRCS = $(wildcard $(SRC)/*.cpp)
+SRCS = $(wildcard $(SRC)/*.cpp, $(SRC)/*.hpp)
 OBJS = $(patsubst $(SRC)/%.cpp,  $(OBJ)/%.o, $(SRCS))
 BIN=./bin
 TARGET=$(BIN)/startpi
