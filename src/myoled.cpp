@@ -1,7 +1,7 @@
 #include "myoled.hpp"
 #include <stdbool.h>
 
-myOled::myOled(int16_t oledwidth, int16_t oledheight) :myOled_graphics(oledwidth, oledheight)
+myOled::myOled(int16_t oledwidth, int16_t oledheight)
 {
 	_OLED_HEIGHT = oledheight;
 	_OLED_WIDTH = oledwidth;
@@ -121,9 +121,30 @@ void myOled::drawPixel(int16_t x, int16_t y, uint8_t color)
 	break;
 	}
 		uint16_t tc = (bufferWidth * (y /8)) + x;
-		this->buffer[tc] |= (1 << (y & 7));
+		switch (color)
+		{
+			case WHITE:  this->buffer[tc] |= (1 << (y & 7)); break;
+			case BLACK:  this->buffer[tc] &= ~(1 << (y & 7)); break;
+			case INVERSE: this->buffer[tc] ^= (1 << (y & 7)); break;
+		}
 }
 
+void myOled::fillScreen(uint8_t dataPattern, uint8_t delay)
+{
+	I2C_ON();
+	for (uint8_t row = 0; row < _OLED_PAGE_NUM; row++)
+	{
+		myOled_command( 0xB0 | row);
+		myOled_command(myOled_SET_LOWER_COLUMN);
+		myOled_command(myOled_SET_HIGHER_COLUMN);
+		for (uint8_t col = 0; col < _OLED_WIDTH; col++)
+		{
+			myOled_data(dataPattern);
+			bcm2835_delay(delay);
+		}
+	}
+	I2C_OFF();
+}
 
 void myOled::I2C_Write_Byte(uint8_t value, uint8_t cmd)
 {
@@ -147,7 +168,7 @@ void myOled::I2C_Write_Byte(uint8_t value, uint8_t cmd)
 void myOled::update()
 {
 	uint8_t x = 0; uint8_t y = 0; uint8_t w = this->bufferWidth; uint8_t h = this->bufferHeight;
-	OLEDBuffer( x,  y,  w,  h, (uint8_t*) this->buffer);
+	oledBuffer( x,  y,  w,  h, (uint8_t*) this->buffer);
 }
 
 void myOled::clearBuffer()
@@ -157,7 +178,7 @@ void myOled::clearBuffer()
 
 }
 
-void myOled::OLEDBuffer(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t* data)
+void myOled::oledBuffer(int16_t x, int16_t y, uint8_t w, uint8_t h, uint8_t* data)
 {
 	I2C_ON();
 	uint8_t tx, ty;
@@ -196,11 +217,11 @@ size_t myOled::print(const std::string &s) {
     return write((const uint8_t *)s.c_str(), s.length());
 }
 
-size_t myOled::write(const uint8_t *buffer, size_t size)
+size_t myOled::write(const uint8_t *text_buffer, size_t size)
 {
     size_t n = 0;
     while (size--) {
-    if (write(*buffer++)) n++;
+    if (write(*text_buffer++)) n++;
     else break;
     }
     return n;
@@ -245,7 +266,7 @@ void myOled::drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint
 	}
 	else 
 	{
-		line = pFontDefaultptr[((c - _CurrentFontoffset) * _CurrentFontWidth) + i];
+		line = pFontDefaultptr[((c - _CurrentFontoffset) * _CurrentFontWidth) + i]; break;
 	}
 
 	for (int8_t j = 0; j<_CurrentFontheight ; j++) 
@@ -253,6 +274,10 @@ void myOled::drawChar(int16_t x, int16_t y, unsigned char c, uint8_t color, uint
 		if (line & 0x1) 
 		{
 			drawPixel(x+i, y+j, color);
+		}
+		else if (bg != color) 
+		{
+			drawPixel(x+i, y+j, bg);
 		}
 		line >>= 1;
 	}

@@ -41,6 +41,8 @@ int main(int argc, char **argv)
 
 	bcm2835_delay(500);
 	myOLED.begin(I2C_Speed, I2C_Address);
+	myOLED.fillScreen(0xF0, 0);
+	bcm2835_delay(1500);
 
 	return TestLoop();
 	
