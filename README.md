@@ -30,5 +30,20 @@ This is a repository that allows pattern and text to by displayed on an SSD1306 
    `mk-sbuild --arch=armhf bullseye --debootstrap-mirror=http://archive.raspbian.org/raspbian/ --name=rpi-bullseye`
    If running `mk-sbuild` for the first time, accept the default `.sbuildrc` file, log out and log back into your system and run the command another time. If it completes successfuly follow on to the next steps.
 
-9. 
+9. Enter the newly created chroot environment by running `sudo schroot -c source:rpi-bullseye-armhf -u root -d /home bash` on the host machine.
+10. Install dependencies by running `apt install build-essential wget unzip`
+11. Obtain BCM2835 library by running `wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.73.tar.gz`
+12. Extract and install the driver by running:\
+    `tar zxvf bcm2835-1.73.tar.gz`\
+    `cd bcm2835-1.73`\
+    `./configure`\
+    `make && sudo make install`
+
+13. Obtain repo by running `wget https://github.com/jgouletlact/startpi/archive/refs/heads/main.zip`
+14. Extract and compile program by running:\
+    `unzip startpi-main.zip`\
+    `cd startpi`\
+    `make`
+    
+15. Copy the binary from `bin` folder to Raspberry Pi via SCP.
    
