@@ -14,12 +14,12 @@ This is a repository that allows pattern and text to by displayed on an SSD1306 
 
 6. Similarly, create a file at `$HOME/.mk-sbuild.rc` with these lines:\
   `SOURCE_CHROOTS_DIR="$HOME/chroots"`\
-  DEBOOTSTRAP_KEYRING="$HOME/raspbian-archive-keyring.gpg"`\
-  TEMPLATE_SOURCES="$HOME/rpi.sources"`\
-  SKIP_UPDATES="1"`\
-  SKIP_PROPOSED="1"`\
-  SKIP_SECURITY="1"`\
-  EATMYDATA="1"`
+  `DEBOOTSTRAP_KEYRING="$HOME/raspbian-archive-keyring.gpg"`\
+  `TEMPLATE_SOURCES="$HOME/rpi.sources"`\
+  `SKIP_UPDATES="1"`\
+  `SKIP_PROPOSED="1"`\
+  `SKIP_SECURITY="1"`\
+  `EATMYDATA="1"`
 
 7. Check the architecture and system of the Raspberry Pi by running the following commands on the device:\
    `dpkg --print-architecture`\
@@ -31,7 +31,7 @@ This is a repository that allows pattern and text to by displayed on an SSD1306 
    If running `mk-sbuild` for the first time, accept the default `.sbuildrc` file, log out and log back into your system and run the command another time. If it completes successfuly follow on to the next steps.
 
 9. Enter the newly created chroot environment by running `sudo schroot -c source:rpi-bullseye-armhf -u root -d /home bash` on the host machine.
-10. Install dependencies by running `apt install build-essential wget unzip`
+10. Install dependencies by running `apt install build-essential wget unzip ca-certificates`
 11. Obtain BCM2835 library by running `wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.73.tar.gz`
 12. Extract and install the driver by running:\
     `tar zxvf bcm2835-1.73.tar.gz`\
