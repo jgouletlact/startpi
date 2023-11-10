@@ -41,8 +41,8 @@ This is a repository that allows pattern and text to by displayed on an SSD1306 
 
 13. Obtain repo by running `wget https://github.com/jgouletlact/startpi/archive/refs/heads/main.zip`
 14. Extract and compile program by running:\
-    `unzip startpi-main.zip`\
-    `cd startpi`\
+    `unzip main.zip`\
+    `cd startpi-main`\
     `make`
     
 15. Copy the binary from `bin` folder to Raspberry Pi via SCP.
