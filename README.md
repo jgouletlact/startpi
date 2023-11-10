@@ -1,6 +1,6 @@
 # Startpi SSD1306 OLED I2C Raspberry Pi software
 This is a repository that allows pattern and text to by displayed on an SSD1306 OLED display controlled by the Raspberry Pi's I2C interface.
-## Ubuntu Host Cross-Compilation
+## Ubuntu Host Cross-Compilation via QEMU
 1. Setup ssh on both the host Ubuntu machine and the Raspberry pi if not already present by installing the ssh package and running `sudo systemctl enable -- now ssh`.
 2. If not present, generate ssh key by running `ssh-keygen -t rsa`.
 3. Install development packages on the host by running the command `sudo apt install ubuntu-dev-tools cmake curl`.
